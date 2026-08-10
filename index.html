@@ -1281,6 +1281,28 @@
         let currentLanguage = 'italian';
         let uploadedPhotos = [];
 
+        // Load photos from local storage on page load
+        function loadPhotosFromStorage() {
+            try {
+                const stored = localStorage.getItem('sicily-trip-photos');
+                if (stored) {
+                    uploadedPhotos = JSON.parse(stored);
+                    updatePhotoGrid();
+                }
+            } catch (e) {
+                console.log('Could not load photos from storage');
+            }
+        }
+
+        // Save photos to local storage
+        function savePhotosToStorage() {
+            try {
+                localStorage.setItem('sicily-trip-photos', JSON.stringify(uploadedPhotos));
+            } catch (e) {
+                console.log('Could not save photos to storage');
+            }
+        }
+
         function switchTab(tabName) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-rail-item').forEach(t => t.classList.remove('active'));
@@ -1484,6 +1506,7 @@
                         filename: file.name
                     });
                     updatePhotoGrid();
+                    savePhotosToStorage();
                     
                     // Show success feedback
                     const feedback = document.createElement('div');
@@ -1511,6 +1534,7 @@
                         type: file.type
                     });
                     updatePhotoGrid();
+                    savePhotosToStorage();
                     
                     // Show success feedback
                     const feedback = document.createElement('div');
@@ -1569,6 +1593,7 @@
                 
                 photoContainer.onclick = () => {
                     uploadedPhotos.splice(index, 1);
+                    savePhotosToStorage();
                     updatePhotoGrid();
                 };
                 
@@ -1645,20 +1670,8 @@
         }
 
         function startCameraTranslation() {
-            // Check if device has camera access capability
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'back' } })
-                    .then(stream => {
-                        alert('Camera access granted. Point camera at Italian text to translate. (Advanced translation feature - requires internet connection)');
-                        // In a full implementation, this would process the camera feed
-                        stream.getTracks().forEach(track => track.stop());
-                    })
-                    .catch(err => {
-                        alert('Camera permission denied or not available. Please enable camera access in Settings > Sicily Trip > Camera');
-                    });
-            } else {
-                alert('Camera not available on this device. Please use the Phrases tab instead for translations.');
-            }
+            // Trigger the camera input (same as Camera tab)
+            document.getElementById('cameraInput').click();
         }
 
         function translateText() {
@@ -1963,6 +1976,7 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            loadPhotosFromStorage();
             renderAlphabet();
             renderChurches();
             fetchExchangeRate();
