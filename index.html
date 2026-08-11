@@ -649,8 +649,8 @@
                 
                 <div style="margin-bottom: 12px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button class="btn btn-primary" style="padding: 10px;" onclick="showDiningTab('regular')">🍝 Regular Dishes</button>
-                        <button class="btn btn-secondary" style="padding: 10px;" onclick="showDiningTab('fasting')">✝️ Fasting Guide</button>
+                        <button class="btn btn-primary dining-tab-btn" style="padding: 10px;" data-tab="regular" onclick="showDiningTab('regular')">🍝 Regular Dishes</button>
+                        <button class="btn btn-secondary dining-tab-btn" style="padding: 10px;" data-tab="fasting" onclick="showDiningTab('fasting')">✝️ Fasting Guide</button>
                     </div>
                 </div>
                 
@@ -891,6 +891,8 @@
                 { name: 'Granita Siciliana', category: 'Vegan', description: 'Sicilian ice with fresh fruit (vegan version)', dietary: 'Vegan, Gluten-free' }
             ]
         };
+
+        const phrases = {
             italian: {
                 transportation: [
                     { english: 'Bicycle rental', italian: 'Noleggio biciclette', response: 'Certo, quanto tempo vuoi?' },
@@ -2272,23 +2274,30 @@
         function showDiningTab(tab) {
             const regularSection = document.getElementById('regularDiningSection');
             const fastingSection = document.getElementById('fastingDiningSection');
-            const regularBtn = document.querySelector('[onclick="showDiningTab(\'regular\')"]');
-            const fastingBtn = document.querySelector('[onclick="showDiningTab(\'fasting\')"]');
+            
+            // Get all buttons with data attributes instead
+            const buttons = document.querySelectorAll('.dining-tab-btn');
             
             if (tab === 'regular') {
                 regularSection.style.display = 'block';
                 fastingSection.style.display = 'none';
-                regularBtn.className = 'btn btn-primary';
-                regularBtn.style.padding = '10px';
-                fastingBtn.className = 'btn btn-secondary';
-                fastingBtn.style.padding = '10px';
+                buttons.forEach(btn => {
+                    if (btn.dataset.tab === 'regular') {
+                        btn.className = 'btn btn-primary';
+                    } else {
+                        btn.className = 'btn btn-secondary';
+                    }
+                });
             } else {
                 regularSection.style.display = 'none';
                 fastingSection.style.display = 'block';
-                regularBtn.className = 'btn btn-secondary';
-                regularBtn.style.padding = '10px';
-                fastingBtn.className = 'btn btn-primary';
-                fastingBtn.style.padding = '10px';
+                buttons.forEach(btn => {
+                    if (btn.dataset.tab === 'fasting') {
+                        btn.className = 'btn btn-primary';
+                    } else {
+                        btn.className = 'btn btn-secondary';
+                    }
+                });
             }
         }
 
