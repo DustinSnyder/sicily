@@ -466,6 +466,14 @@
 <body>
     <div class="app-container">
         <div class="nav-rail">
+            <button class="nav-rail-item" onclick="switchTab('emergency')" title="Emergency Services">
+                <span style="font-size: 28px;">🚨</span>
+                <span class="nav-rail-label">Emergency</span>
+            </button>
+            <button class="nav-rail-item" onclick="openWhatsApp()" title="WhatsApp">
+                <span style="font-size: 28px;">💬</span>
+                <span class="nav-rail-label">WhatsApp</span>
+            </button>
             <button class="nav-rail-item active" onclick="switchTab('tools')" title="Google Translate">
                 <span style="font-size: 28px;">🌐</span>
                 <span class="nav-rail-label">Translate</span>
@@ -490,10 +498,6 @@
                 <span style="font-size: 28px;">📰</span>
                 <span class="nav-rail-label">News</span>
             </button>
-            <button class="nav-rail-item" onclick="switchTab('whatsapp')" title="WhatsApp">
-                <span style="font-size: 28px;">💬</span>
-                <span class="nav-rail-label">WhatsApp</span>
-            </button>
             <button class="nav-rail-item" onclick="switchTab('currency')" title="Currency Converter">
                 <span style="font-size: 28px;">💶</span>
                 <span class="nav-rail-label">Currency</span>
@@ -511,6 +515,92 @@
             </div>
 
             <div class="content">
+            <!-- Emergency Services Section -->
+            <section id="emergency" class="section">
+                <div class="section-title">🚨 Emergency Services Sicily</div>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Important emergency contacts and services in Sicily</p>
+                
+                <div class="card" style="background: #ffe8e8; border-left: 4px solid #d32f2f;">
+                    <div class="card-title" style="color: #d32f2f;">⚠️ EMERGENCY - CALL IMMEDIATELY</div>
+                    <div style="font-size: 14px; font-weight: 600; color: #d32f2f; margin: 12px 0;">112</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Universal Emergency Number (Police, Ambulance, Fire)</p>
+                    <button class="btn" style="width: 100%; padding: 12px; background: #d32f2f; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;" onclick="makeEmergencyCall('112')">
+                        📞 Call 112 (Emergency)
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🚔 Police (Carabinieri)</div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 13px; margin-bottom: 8px;"><strong>Non-Emergency:</strong></div>
+                        <button class="btn btn-secondary" style="width: 100%; padding: 10px; margin-bottom: 8px;" onclick="makeCall('113')">
+                            📞 Call 113 (Police)
+                        </button>
+                        <button class="btn btn-secondary" style="width: 100%; padding: 10px;" onclick="makeCall('112')">
+                            📞 Call 112 (Carabinieri)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🚑 Ambulance / Medical</div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 13px; margin-bottom: 8px;"><strong>Emergency Medical:</strong></div>
+                        <button class="btn btn-secondary" style="width: 100%; padding: 10px; margin-bottom: 8px;" onclick="makeCall('118')">
+                            📞 Call 118 (Ambulance)
+                        </button>
+                        <p style="font-size: 11px; color: #999; margin-top: 8px;">For medical emergencies, accidents, or urgent health issues</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🔥 Fire Department</div>
+                    <div style="margin-bottom: 12px;">
+                        <button class="btn btn-secondary" style="width: 100%; padding: 10px;" onclick="makeCall('115')">
+                            📞 Call 115 (Fire Department)
+                        </button>
+                        <p style="font-size: 11px; color: #999; margin-top: 8px;">For fires, accidents, and rescue operations</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💊 Emergency Health Info</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">If you don't speak Italian, tap "Open Translate Tab" first to use the translator</p>
+                    <button class="btn btn-secondary" style="width: 100%; padding: 10px;" onclick="switchTab('tools')">
+                        🌐 Open Translate
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">Use the translator to communicate medical information with emergency services</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📋 Emergency Phrases (Sicilian/Italian)</div>
+                    <div style="background: #f9f9f9; padding: 12px; border-radius: 6px; font-size: 12px; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;"><strong>English → Italian:</strong></div>
+                        <div style="font-size: 11px; margin-bottom: 12px;">
+                            • "Help!" → "Aiuto!"<br>
+                            • "Call ambulance" → "Chiami un'ambulanza"<br>
+                            • "I'm injured" → "Sono ferito/a"<br>
+                            • "Heart attack" → "Infarto"<br>
+                            • "Accident" → "Incidente"
+                        </div>
+                        <button class="btn btn-secondary" style="width: 100%; padding: 10px;" onclick="switchTab('phrases')">
+                            💭 View All Phrases
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💡 Tips for Emergencies</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;">✓ <strong>Always dial 112 first</strong> for life-threatening situations</div>
+                        <div style="margin-bottom: 8px;">✓ <strong>Stay calm</strong> and speak slowly</div>
+                        <div style="margin-bottom: 8px;">✓ <strong>Know your location</strong> - tell them where you are</div>
+                        <div style="margin-bottom: 8px;">✓ <strong>Use the translator</strong> if you need help communicating</div>
+                        <div>✓ <strong>Keep your passport</strong> and travel insurance info handy</div>
+                    </div>
+                </div>
+            </section>
+            
             <!-- Tab 1: Google Translate (Landing Page) -->
             <section id="tools" class="section active">
                 <div class="section-title">Google Translate</div>
@@ -570,10 +660,7 @@
                 <div class="section-title">Google Maps</div>
                 <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Find your way around Sicily</p>
                 <div style="margin-bottom: 16px;">
-                    <div class="button-group">
-                        <button class="btn btn-primary" style="flex: 1;" onclick="openMapsApp('google')">🗺️ Google Maps</button>
-                        <button class="btn btn-secondary" style="flex: 1;" onclick="openMapsApp('apple')">🗺️ Apple Maps</button>
-                    </div>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openMapsApp('google')">🗺️ Open Google Maps</button>
                 </div>
                 <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">Top 10 Things to See & Do</div>
                 <p style="font-size: 12px; color: #666; margin-bottom: 12px;">Explore major cities in Sicily</p>
@@ -599,46 +686,43 @@
                 <div id="attractionsContainer"></div>
             </section>
 
-            <!-- Camera Section (Tab 3) - Native Photo & Video Capture -->
+            <!-- Camera Section (Tab 4) - iCloud Shared Album -->
             <section id="camera" class="section">
-                <div class="section-title">Camera & Video</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Capture photos and videos. They save locally to your device.</p>
+                <div class="section-title">📷 Sicily Trip Album</div>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Photos and videos from your trip (stored in iCloud shared album)</p>
                 
                 <div class="card">
-                    <div class="card-title">📷 Take Photos</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Capture memories from your Sicily adventure</p>
-                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openCamera()">
-                        📷 Open Camera
+                    <div class="card-title">📲 Upload Photos & Videos</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Add your memories to the shared iCloud album</p>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openICloudAlbum()">
+                        🔗 Open iCloud Shared Album
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">This will open your shared iCloud album where you can upload photos and videos</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎯 Album Link</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Share this link to add photos to the album</p>
+                    <div style="background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 8px; word-break: break-all; font-size: 11px; color: #333; font-family: monospace;">
+                        https://photos.app.goo.gl/HXLMk3cwtiUFnE156
+                    </div>
+                    <button class="btn btn-secondary" style="width: 100%; padding: 10px;" onclick="copyAlbumLink()">
+                        📋 Copy Link
                     </button>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🎥 Record Videos</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Record videos to remember your trip</p>
-                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openVideoCamera()">
-                        🎥 Record Video
-                    </button>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">💾 Export to iCloud</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Save your photos/videos for uploading to iCloud</p>
-                    <button class="btn btn-secondary" style="width: 100%; padding: 12px; margin-bottom: 8px;" onclick="checkStorageStatus()">
-                        📊 Check Storage Status
-                    </button>
-                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="downloadAllPhotosAsZip()">
-                        ⬇️ Download All Photos & Videos
-                    </button>
-                    <p style="font-size: 11px; color: #999; margin-top: 8px;">📱 <strong>iOS Instructions:</strong> Download the ZIP, then upload the files to iCloud Drive or share with your wife</p>
-                </div>
-                
-                <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleCameraCapture(event)" style="display: none;">
-                <input type="file" id="videoInput" accept="video/*" capture="environment" onchange="handleVideoCapture(event)" style="display: none;">
-                
-                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📸 Album (<span id="photoCount">0</span>)</div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 12px;">Your photos and videos appear here. Tap any photo to delete.</p>
-                <div id="photoGrid" class="photo-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; min-height: 200px;">
-                    <div style="grid-column: 1 / -1; text-align: center; color: #999; padding: 40px 20px;">No photos or videos yet. Start capturing!</div>
+                    <div class="card-title">💡 How It Works</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.6;">
+                        <div style="margin-bottom: 8px;"><strong>📸 During your trip:</strong></div>
+                        <div style="margin-bottom: 12px; padding-left: 12px; font-size: 11px;">1. Take photos/videos on your iPhone<br>2. Upload to iCloud shared album via Photos app<br>3. Everyone sees them instantly</div>
+                        
+                        <div style="margin-bottom: 8px;"><strong>👥 Family access:</strong></div>
+                        <div style="margin-bottom: 8px; padding-left: 12px; font-size: 11px;">Your wife and kids can view and add photos using the link above</div>
+                        
+                        <div style="margin-bottom: 8px;"><strong>✨ Why this is better:</strong></div>
+                        <div style="padding-left: 12px; font-size: 11px;">✅ All photos centralized in one place<br>✅ Real-time sharing with family<br>✅ Automatic backup to iCloud<br>✅ No app uploads needed</div>
+                    </div>
                 </div>
             </section>
 
@@ -697,7 +781,7 @@
             <!-- Journal Section (Tab 5) -->
             <section id="journal" class="section">
                 <div class="section-title">📔 Trip Journal</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Write about your experiences and memories from Sicily</p>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Write about your experiences and memories from Sicily - shared with your wife in real-time!</p>
                 
                 <div class="card">
                     <div class="card-title">✍️ New Entry</div>
@@ -705,30 +789,56 @@
                         <input type="text" id="journalTitle" placeholder="Entry title (e.g., Day 1 in Palermo)" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-bottom: 8px;">
                         <textarea id="journalContent" placeholder="Write your thoughts, experiences, and memories..." style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; min-height: 150px; resize: vertical; font-family: inherit;"></textarea>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="saveJournalEntry()">💾 Save Entry</button>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn btn-primary" style="padding: 10px;" onclick="saveJournalEntry()">💾 Save Locally</button>
+                        <button class="btn btn-primary" style="padding: 10px;" onclick="saveToSharedDoc()">☁️ Share</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🔗 Shared Google Doc</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Both you and your wife can view and edit entries here in real-time</p>
+                    <button class="btn btn-secondary" style="width: 100%; padding: 12px;" onclick="openSharedDoc()">
+                        📄 Open Shared Journal
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">This doc is shared with your wife - she'll see entries as you add them!</p>
                 </div>
                 
-                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📚 Your Entries</div>
+                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📚 Your Local Entries</div>
                 <div id="journalEntries"></div>
             </section>
 
             <!-- News Section (Tab 6) -->
             <section id="news" class="section">
                 <div class="section-title">📰 Sicily News</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Latest news and updates from Sicily</p>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Stay informed about what's happening in Sicily during your trip</p>
                 
-                <iframe src="https://news.google.com/news?q=Sicily&hl=en-US&gl=US&ceid=US:en" 
-                        style="width: 100%; height: 600px; border: none; border-radius: 8px; background: white;"
-                        title="Sicily News Feed">
-                </iframe>
-                
-                <div style="margin-top: 12px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; color: #666;">
-                    <strong>💡 Tip:</strong> Tap any article to read the full story on the news site.
+                <div class="card">
+                    <div class="card-title">🔗 Open Sicily News</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Get the latest news and updates from Sicily</p>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openSicilyNews()">
+                        📰 Open Google News for Sicily
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">Opens Google News with your account logged in - Sicily news only</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💡 Why This Matters</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.6;">
+                        <div style="margin-bottom: 8px;">Stay updated on:</div>
+                        <div style="padding-left: 12px; font-size: 11px;">
+                            ✓ Local events and happenings<br>
+                            ✓ Travel advisories<br>
+                            ✓ Cultural events<br>
+                            ✓ Transportation updates<br>
+                            ✓ Weather and conditions
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- WhatsApp Section (Tab 6) -->
-            <section id="whatsapp" class="section">
+            <!-- WhatsApp Section - Hidden (opens app directly from nav) -->
+            <section id="whatsapp" class="section" style="display: none;">
                 <div class="section-title">💬 WhatsApp</div>
                 <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Share updates with the family in your Sicily group</p>
                 
@@ -1560,6 +1670,61 @@
             });
         }
 
+        function openSharedDoc() {
+            // Open the shared Google Doc
+            const docURL = 'https://docs.google.com/document/d/1KHv591BLkahp6SN_LXvJBkUUFeK9wPsDSPEcZY8tkls/edit?usp=sharing';
+            window.open(docURL, '_blank');
+        }
+
+        function openSicilyNews() {
+            // Open Google News for Sicily with your Google account
+            // This URL will use your signed-in Google account (dustinsnyder77@gmail.com)
+            const newsURL = 'https://news.google.com/search?q=Sicily&hl=en-US&gl=US&ceid=US:en';
+            window.open(newsURL, '_blank');
+        }
+
+        function saveToSharedDoc() {
+            const title = document.getElementById('journalTitle').value.trim();
+            const content = document.getElementById('journalContent').value.trim();
+
+            if (!title || !content) {
+                alert('Please enter both a title and some content');
+                return;
+            }
+
+            const entryText = `\n📝 ${title}\n📅 ${new Date().toLocaleString()}\n\n${content}\n\n---`;
+
+            // Show loading message
+            alert('Preparing to save to shared document...\n\nAfter this dialog, the Google Doc will open. Paste this entry there:\n\n' + entryText);
+
+            // Open the doc for manual paste (easier than trying to append via API)
+            openSharedDoc();
+
+            // Also save locally
+            journalEntries.unshift({
+                id: Date.now(),
+                title: title,
+                content: content,
+                date: new Date().toLocaleString()
+            });
+
+            saveJournalToStorage();
+            displayJournalEntries();
+
+            // Clear form
+            document.getElementById('journalTitle').value = '';
+            document.getElementById('journalContent').value = '';
+
+            const feedback = document.createElement('div');
+            feedback.style.cssText = 'position: fixed; top: 20px; left: 20px; right: 20px; background: #2196F3; color: white; padding: 12px 16px; border-radius: 6px; z-index: 1000; text-align: center; font-weight: 500;';
+            feedback.textContent = 'Entry saved locally & shared doc opened ✓';
+            document.body.appendChild(feedback);
+
+            setTimeout(() => {
+                feedback.remove();
+            }, 2000);
+        }
+
         function switchTab(tabName) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-rail-item').forEach(t => t.classList.remove('active'));
@@ -1977,17 +2142,37 @@
         }
 
         function openGoogleLens() {
-            // Google Lens URL scheme for iOS
-            // This opens Google Lens camera directly on iPhone
-            const googleLensURL = 'https://lens.google.com/';
+            // Google Lens app URL scheme for iOS
+            // This opens the Google app with Lens camera directly on iPhone
+            const googleAppURL = 'googleg://lens';
             
-            // Try opening in app if available
-            window.location.href = googleLensURL;
+            // Try opening Google app with Lens
+            window.location.href = googleAppURL;
             
-            // Fallback message if it doesn't open
+            // Fallback: open Google app
             setTimeout(() => {
-                alert('Opening Google Lens...\n\nIf Google Lens didn\'t open, make sure you have the Google app installed, then tap the Lens icon (camera icon) at the bottom of the search bar.');
+                window.location.href = 'https://www.google.com/';
+            }, 500);
+            
+            // Fallback message
+            setTimeout(() => {
+                alert('Opening Google Lens app...\n\nIf the Google app didn\'t open:\n1. Make sure you have the Google app installed\n2. Or visit Google.com and tap the Lens icon (camera icon)');
             }, 1500);
+        }
+
+        function openICloudAlbum() {
+            // Open the iCloud shared album
+            const albumURL = 'https://photos.app.goo.gl/HXLMk3cwtiUFnE156';
+            window.open(albumURL, '_blank');
+        }
+
+        function copyAlbumLink() {
+            const albumLink = 'https://photos.app.goo.gl/HXLMk3cwtiUFnE156';
+            navigator.clipboard.writeText(albumLink).then(() => {
+                alert('Album link copied! 📋\n\nShare this with family and friends so they can view and add photos to the Sicily trip album.');
+            }).catch(() => {
+                alert('Link:\nhttps://photos.app.goo.gl/HXLMk3cwtiUFnE156\n\nCopy and share this with family');
+            });
         }
 
         function translateText() {
@@ -2057,6 +2242,16 @@
             }, 1500);
         }
 
+        function makeEmergencyCall(number) {
+            // For emergency, use tel: protocol
+            window.location.href = `tel:${number}`;
+        }
+
+        function makeCall(number) {
+            // For non-emergency calls, use tel: protocol
+            window.location.href = `tel:${number}`;
+        }
+
         function sendQuickMessage(message) {
             const encodedMessage = encodeURIComponent(message);
             window.location.href = `https://wa.me/?text=${encodedMessage}`;
@@ -2111,25 +2306,8 @@
         }
 
         function openMapsApp(service) {
-            if (service === 'google') {
-                // Google Maps URL that works on all devices
-                window.location.href = 'https://www.google.com/maps/search/Sicily';
-            } else {
-                // Apple Maps URL scheme for iOS/macOS
-                // Uses both web and app URL for best compatibility
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                if (isIOS) {
-                    // Try native Maps app first on iOS
-                    window.location.href = 'maps://maps.apple.com/?q=Sicily';
-                    setTimeout(() => {
-                        // Fallback to web if app doesn't open
-                        window.location.href = 'https://maps.apple.com/?q=Sicily';
-                    }, 500);
-                } else {
-                    // For macOS and other devices, use web version
-                    window.location.href = 'https://maps.apple.com/?q=Sicily';
-                }
-            }
+            // Google Maps URL that works on all devices
+            window.location.href = 'https://www.google.com/maps/search/Sicily';
         }
 
         function shareApp() {
