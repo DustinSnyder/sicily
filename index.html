@@ -28,14 +28,14 @@
             max-width: 100%;
             height: 100vh;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
         }
 
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            margin-left: 70px;
+            margin-left: 0;
         }
 
         .header {
@@ -55,47 +55,55 @@
         .header-subtitle {
             font-size: 11px;
             opacity: 0.9;
+            margin-bottom: 12px;
         }
 
         .nav-rail {
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            width: 70px;
-            background: linear-gradient(180deg, #1e5a96 0%, #154070 100%);
-            padding: 12px 0;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            position: relative;
+            left: auto;
+            top: auto;
+            height: auto;
+            width: 100%;
+            background: linear-gradient(135deg, #1e5a96 0%, #2d7db8 100%);
+            padding: 0 8px 12px 8px;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: auto;
             z-index: 200;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
             align-items: center;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            box-shadow: none;
+            max-height: auto;
         }
 
         .nav-rail-item {
-            width: 60px;
-            height: 60px;
+            width: 100%;
+            height: 70px;
             border: none;
-            background: none;
+            background: rgba(255,255,255,0.15);
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            color: rgba(255,255,255,0.7);
+            gap: 3px;
+            color: rgba(255,255,255,0.85);
             font-size: 24px;
-            margin-bottom: 8px;
-            border-radius: 12px;
+            margin-bottom: 0;
+            border-radius: 8px;
             transition: all 0.2s;
             position: relative;
         }
 
         .nav-rail-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.25);
             color: white;
+        }
+
+        .nav-rail-label {
+            font-size: 11px !important;
+            color: rgba(255,255,255,0.85);
         }
 
         .nav-rail-item.active {
@@ -465,57 +473,80 @@
 </head>
 <body>
     <div class="app-container">
-        <div class="nav-rail">
-            <button class="nav-rail-item" onclick="switchTab('emergency')" title="Emergency Services">
-                <span style="font-size: 28px;">🚨</span>
-                <span class="nav-rail-label">Emergency</span>
-            </button>
-            <button class="nav-rail-item" onclick="openWhatsApp()" title="WhatsApp">
-                <span style="font-size: 28px;">💬</span>
-                <span class="nav-rail-label">WhatsApp</span>
-            </button>
-            <button class="nav-rail-item active" onclick="switchTab('tools')" title="Google Translate">
-                <span style="font-size: 28px;">🌐</span>
-                <span class="nav-rail-label">Translate</span>
-            </button>
-            <button class="nav-rail-item" onclick="switchTab('maps')" title="Google Maps">
-                <span style="font-size: 28px;">🗺️</span>
-                <span class="nav-rail-label">Maps</span>
-            </button>
-            <button class="nav-rail-item" onclick="switchTab('dining')" title="Sicilian Dining">
-                <span style="font-size: 28px;">🍽️</span>
-                <span class="nav-rail-label">Dining</span>
-            </button>
-            <button class="nav-rail-item" onclick="openICloudAlbum()" title="Sicily Trip Album">
-                <span style="font-size: 28px;">📷</span>
-                <span class="nav-rail-label">Camera</span>
-            </button>
-            <button class="nav-rail-item" onclick="openAppleNotes()" title="Trip Journal">
-                <span style="font-size: 28px;">📔</span>
-                <span class="nav-rail-label">Journal</span>
-            </button>
-            <button class="nav-rail-item" onclick="switchTab('news')" title="Sicily News">
-                <span style="font-size: 28px;">📰</span>
-                <span class="nav-rail-label">News</span>
-            </button>
-            <button class="nav-rail-item" onclick="switchTab('currency')" title="Currency Converter">
-                <span style="font-size: 28px;">💶</span>
-                <span class="nav-rail-label">Currency</span>
-            </button>
-            <button class="nav-rail-item" onclick="switchTab('phrases')" title="Travel Phrases">
-                <span style="font-size: 28px;">💭</span>
-                <span class="nav-rail-label">Phrases</span>
-            </button>
-            <button class="nav-rail-item" onclick="openSpotify()" title="Sicily Music">
-                <span style="font-size: 28px;">🎵</span>
-                <span class="nav-rail-label">Spotify</span>
-            </button>
-        </div>
-
         <div class="main-content">
             <div class="header">
                 <div class="header-title">🇮🇹 Sicily Trip</div>
                 <div class="header-subtitle">October - November 2026</div>
+                <div class="nav-rail">
+                    <button class="nav-rail-item" onclick="switchTab('budget')" title="Budget & Expenses">
+                        <span style="font-size: 24px;">💰</span>
+                        <span class="nav-rail-label">Budget</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="openICloudAlbum()" title="Sicily Trip Album">
+                        <span style="font-size: 24px;">📷</span>
+                        <span class="nav-rail-label">Camera</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('currency')" title="Currency Converter">
+                        <span style="font-size: 24px;">💶</span>
+                        <span class="nav-rail-label">Currency</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('dining')" title="Sicilian Dining">
+                        <span style="font-size: 24px;">🍽️</span>
+                        <span class="nav-rail-label">Dining</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('documents')" title="Travel Documents">
+                        <span style="font-size: 24px;">📄</span>
+                        <span class="nav-rail-label">Documents</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('emergency')" title="Emergency Services">
+                        <span style="font-size: 24px;">🚨</span>
+                        <span class="nav-rail-label">Emergency</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('infohub')" title="Travel Information">
+                        <span style="font-size: 24px;">ℹ️</span>
+                        <span class="nav-rail-label">Info Hub</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('itinerary')" title="Trip Itinerary">
+                        <span style="font-size: 24px;">📅</span>
+                        <span class="nav-rail-label">Itinerary</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="openAppleNotes()" title="Trip Journal">
+                        <span style="font-size: 24px;">📔</span>
+                        <span class="nav-rail-label">Journal</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('maps')" title="Google Maps">
+                        <span style="font-size: 24px;">🗺️</span>
+                        <span class="nav-rail-label">Maps</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('news')" title="Sicily News">
+                        <span style="font-size: 24px;">📰</span>
+                        <span class="nav-rail-label">News</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('phrases')" title="Travel Phrases">
+                        <span style="font-size: 24px;">💭</span>
+                        <span class="nav-rail-label">Phrases</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('reservations')" title="Reservations">
+                        <span style="font-size: 24px;">📋</span>
+                        <span class="nav-rail-label">Reservations</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="switchTab('shared')" title="Shared Trip Board">
+                        <span style="font-size: 24px;">👥</span>
+                        <span class="nav-rail-label">Shared Board</span>
+                    </button>
+                    <button class="nav-rail-item active" onclick="switchTab('tools')" title="Google Translate">
+                        <span style="font-size: 24px;">🌐</span>
+                        <span class="nav-rail-label">Translate</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="openWhatsApp()" title="WhatsApp">
+                        <span style="font-size: 24px;">💬</span>
+                        <span class="nav-rail-label">WhatsApp</span>
+                    </button>
+                    <button class="nav-rail-item" onclick="openSpotify()" title="Sicily Music">
+                        <span style="font-size: 24px;">🎵</span>
+                        <span class="nav-rail-label">Spotify</span>
+                    </button>
+                </div>
             </div>
 
             <div class="content">
@@ -926,7 +957,173 @@
                     <div style="font-size: 11px; color: #999; margin-top: 8px;">Data from Frankfurter API • Updated daily</div>
                 </div>
             </section>
-        </div>
+
+            <!-- Budget Section (NEW) -->
+            <section id="budget" class="section" style="display: none;">
+                <div class="section-title">💰 Trip Budget Tracker</div>
+                <div class="card">
+                    <div class="card-title">Total Budget</div>
+                    <div style="font-size: 24px; font-weight: 600; color: #1e5a96; margin: 8px 0;">€4,250</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 12px;">Estimated budget for Sicily trip</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Budget Breakdown</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>✈️ Flights</span>
+                            <span style="font-weight: 500;">€1,200</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>🏨 Hotels (37 nights)</span>
+                            <span style="font-weight: 500;">€1,850</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>🍽️ Dining & Activities</span>
+                            <span style="font-weight: 500;">€800</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>🚗 Transport & Misc</span>
+                            <span style="font-weight: 500;">€400</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents Section (NEW) -->
+            <section id="documents" class="section" style="display: none;">
+                <div class="section-title">📄 Travel Documents Vault</div>
+                <div class="card">
+                    <div class="card-title">Essential Documents</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 500; color: #1e5a96;">🛂 Passport Copy</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 4px;">Valid until: Nov 15, 2029</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 500; color: #1e5a96;">💳 Travel Insurance</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 4px;">Policy #: TRV-2026-847 | Coverage: €100k</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 500; color: #1e5a96;">🏥 Medical Records</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 4px;">Blood type & emergency contacts</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 500; color: #1e5a96;">💰 Credit Card Info</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 4px;">Bank contacts & backup numbers</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Itinerary Section (NEW) -->
+            <section id="itinerary" class="section" style="display: none;">
+                <div class="section-title">📅 Trip Itinerary</div>
+                <div class="card">
+                    <div class="card-title">Day 1 - October 28</div>
+                    <div style="font-size: 12px; color: #666; margin: 8px 0;">
+                        <p style="margin: 0 0 6px;">2:30 PM - Arrive Palermo (FCO → PMO)</p>
+                        <p style="margin: 0 0 6px;">6:00 PM - Check-in Grand Hotel Piazza Borsa</p>
+                        <p style="margin: 0;">7:30 PM - Dinner at Sicilian Culinary Tour</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Day 2 - October 29</div>
+                    <div style="font-size: 12px; color: #666; margin: 8px 0;">
+                        <p style="margin: 0 0 6px;">9:00 AM - Explore Mondello Beach</p>
+                        <p style="margin: 0 0 6px;">1:00 PM - Lunch at local trattoria</p>
+                        <p style="margin: 0;">3:00 PM - Palermo city walking tour</p>
+                    </div>
+                </div>
+                <p style="font-size: 11px; color: #999; margin-top: 12px; text-align: center;">37 days total • Multiple cities planned</p>
+            </section>
+
+            <!-- Info Hub Section (NEW) -->
+            <section id="infohub" class="section" style="display: none;">
+                <div class="section-title">ℹ️ Travel Information Hub</div>
+                <div class="card">
+                    <div class="card-title">Local Customs & Culture</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;">✓ Greet with handshake or cheek kiss</div>
+                        <div style="margin-bottom: 8px;">✓ Tipping: 5-10% appreciated but not required</div>
+                        <div style="margin-bottom: 8px;">✓ Dress conservatively in churches</div>
+                        <div>✓ Siesta time: Shops close 1-4 PM</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Practical Information</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;">📞 Emergency: 112</div>
+                        <div style="margin-bottom: 8px;">💶 Currency: Euro</div>
+                        <div style="margin-bottom: 8px;">🌍 WiFi: Good availability in major towns</div>
+                        <div>☕ Tap water: Safe to drink</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reservations Section (NEW) -->
+            <section id="reservations" class="section" style="display: none;">
+                <div class="section-title">📋 Reservations Dashboard</div>
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <p style="margin: 0; font-weight: 500; color: #1e5a96;">✈️ Flight - Alitalia AZ 611</p>
+                            <p style="margin: 6px 0 0; font-size: 12px; color: #666;">Oct 25, 2026 at 2:30 PM</p>
+                        </div>
+                        <span style="background: #fce4ec; color: #c2185b; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;">Booked</span>
+                    </div>
+                    <p style="margin: 0; font-size: 11px; color: #999;">ORD → FCO | Seat 12A | Conf. #: AZ611OCT</p>
+                </div>
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <p style="margin: 0; font-weight: 500; color: #1e5a96;">🏨 Hotel - Grand Hotel Piazza Borsa</p>
+                            <p style="margin: 6px 0 0; font-size: 12px; color: #666;">Check-in: Oct 28, 2026</p>
+                        </div>
+                        <span style="background: #e3f2fd; color: #1565c0; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;">Upcoming</span>
+                    </div>
+                    <p style="margin: 0; font-size: 11px; color: #999;">Via Emerico Amari 75 | Conf. #: GPB-5829</p>
+                </div>
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <p style="margin: 0; font-weight: 500; color: #1e5a96;">🍽️ Restaurant - Sicilian Culinary Tour</p>
+                            <p style="margin: 6px 0 0; font-size: 12px; color: #666;">Oct 30, 2026 at 7:00 PM</p>
+                        </div>
+                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;">Confirmed</span>
+                    </div>
+                    <p style="margin: 0; font-size: 11px; color: #999;">Party of 2 | Conf. #: CGK-2847</p>
+                </div>
+            </section>
+
+            <!-- Shared Board Section (NEW) -->
+            <section id="shared" class="section" style="display: none;">
+                <div class="section-title">👥 Shared Trip Board</div>
+                <div class="card">
+                    <div class="card-title">Trip Checklist</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;">
+                            <input type="checkbox" checked> Get travel insurance
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <input type="checkbox" checked> Book flights
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <input type="checkbox" checked> Reserve hotels
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <input type="checkbox"> Book restaurant reservations
+                        </div>
+                        <div>
+                            <input type="checkbox"> Purchase travel adapter
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Shared Notes</div>
+                    <p style="font-size: 12px; color: #666; margin: 0;">You and your wife can add notes here to plan together!</p>
+                </div>
+            </section>
+
 
         <div class="floating-action-bar">
             <button class="btn btn-icon btn-secondary" title="Share App" onclick="shareApp()">👥</button>
