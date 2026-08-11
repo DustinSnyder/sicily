@@ -486,11 +486,11 @@
                 <span style="font-size: 28px;">🍽️</span>
                 <span class="nav-rail-label">Dining</span>
             </button>
-            <button class="nav-rail-item" onclick="switchTab('camera')" title="Camera">
+            <button class="nav-rail-item" onclick="openICloudAlbum()" title="Sicily Trip Album">
                 <span style="font-size: 28px;">📷</span>
                 <span class="nav-rail-label">Camera</span>
             </button>
-            <button class="nav-rail-item" onclick="switchTab('journal')" title="Trip Journal">
+            <button class="nav-rail-item" onclick="openAppleNotes()" title="Trip Journal">
                 <span style="font-size: 28px;">📔</span>
                 <span class="nav-rail-label">Journal</span>
             </button>
@@ -686,8 +686,8 @@
                 <div id="attractionsContainer"></div>
             </section>
 
-            <!-- Camera Section (Tab 4) - iCloud Shared Album -->
-            <section id="camera" class="section">
+            <!-- Camera Section - Hidden (opens app directly from nav) -->
+            <section id="camera" class="section" style="display: none;">
                 <div class="section-title">📷 Sicily Trip Album</div>
                 <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Photos and videos from your trip (stored in iCloud shared album)</p>
                 
@@ -778,34 +778,42 @@
                 </div>
             </section>
 
-            <!-- Journal Section (Tab 5) -->
-            <section id="journal" class="section">
+            <!-- Journal Section - Hidden (opens app directly from nav) -->
+            <section id="journal" class="section" style="display: none;">
                 <div class="section-title">📔 Trip Journal</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Write about your experiences and memories from Sicily - shared with your wife in real-time!</p>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Write about your experiences and memories from Sicily</p>
                 
                 <div class="card">
-                    <div class="card-title">✍️ New Entry</div>
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" id="journalTitle" placeholder="Entry title (e.g., Day 1 in Palermo)" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-bottom: 8px;">
-                        <textarea id="journalContent" placeholder="Write your thoughts, experiences, and memories..." style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; min-height: 150px; resize: vertical; font-family: inherit;"></textarea>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button class="btn btn-primary" style="padding: 10px;" onclick="saveJournalEntry()">💾 Save Locally</button>
-                        <button class="btn btn-primary" style="padding: 10px;" onclick="saveToSharedDoc()">☁️ Share</button>
+                    <div class="card-title">📝 Open Apple Notes</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Write your trip memories using Apple Notes on your iPhone</p>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openAppleNotes()">
+                        📔 Open Apple Notes App
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">Your notes sync across all your Apple devices via iCloud</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💡 Why Apple Notes?</div>
+                    <div style="font-size: 12px; color: #666; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;">✓ <strong>Simple & Fast</strong> - Write instantly</div>
+                        <div style="margin-bottom: 8px;">✓ <strong>iCloud Sync</strong> - All your devices stay in sync</div>
+                        <div style="margin-bottom: 8px;">✓ <strong>Share with Wife</strong> - Easily share notes via iCloud</div>
+                        <div style="margin-bottom: 8px;">✓ <strong>Offline Ready</strong> - Works with no internet</div>
+                        <div>✓ <strong>Rich Formatting</strong> - Add photos, checklists, sketches</div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🔗 Shared Google Doc</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Both you and your wife can view and edit entries here in real-time</p>
-                    <button class="btn btn-secondary" style="width: 100%; padding: 12px;" onclick="openSharedDoc()">
-                        📄 Open Shared Journal
-                    </button>
-                    <p style="font-size: 11px; color: #999; margin-top: 8px;">This doc is shared with your wife - she'll see entries as you add them!</p>
+                    <div class="card-title">👥 Share with Your Wife</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">To share specific notes with your wife:</p>
+                    <div style="font-size: 11px; color: #666; line-height: 1.8;">
+                        1. Open Apple Notes<br>
+                        2. Select a note<br>
+                        3. Tap the "..." menu<br>
+                        4. Tap "Collaborate"<br>
+                        5. Share with her email address
+                    </div>
                 </div>
-                
-                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📚 Your Local Entries</div>
-                <div id="journalEntries"></div>
             </section>
 
             <!-- News Section (Tab 6) -->
@@ -1681,6 +1689,12 @@
             // This URL will use your signed-in Google account (dustinsnyder77@gmail.com)
             const newsURL = 'https://news.google.com/search?q=Sicily&hl=en-US&gl=US&ceid=US:en';
             window.open(newsURL, '_blank');
+        }
+
+        function openAppleNotes() {
+            // Apple Notes app URL scheme for iOS
+            // This opens the native Notes app on iPhone
+            window.location.href = 'notes://';
         }
 
         function saveToSharedDoc() {
