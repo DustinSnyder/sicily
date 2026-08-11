@@ -482,6 +482,14 @@
                 <span style="font-size: 28px;">📷</span>
                 <span class="nav-rail-label">Camera</span>
             </button>
+            <button class="nav-rail-item" onclick="switchTab('journal')" title="Trip Journal">
+                <span style="font-size: 28px;">📔</span>
+                <span class="nav-rail-label">Journal</span>
+            </button>
+            <button class="nav-rail-item" onclick="switchTab('news')" title="Sicily News">
+                <span style="font-size: 28px;">📰</span>
+                <span class="nav-rail-label">News</span>
+            </button>
             <button class="nav-rail-item" onclick="switchTab('whatsapp')" title="WhatsApp">
                 <span style="font-size: 28px;">💬</span>
                 <span class="nav-rail-label">WhatsApp</span>
@@ -540,9 +548,9 @@
                 </div>
                 
                 <div class="card">
-                    <div class="card-title">📷 Camera Translator</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Point camera at Italian/Sicilian text to translate (menu, signs, etc.)</p>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="startCameraTranslation()">Open Camera</button>
+                    <div class="card-title">📷 Camera Translator (Google Lens)</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Point camera at Italian/Sicilian text to translate instantly (menu, signs, etc.)</p>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="openGoogleLens()">📸 Open Google Lens</button>
                 </div>
             </section>
             
@@ -594,7 +602,7 @@
             <!-- Camera Section (Tab 3) - Native Photo & Video Capture -->
             <section id="camera" class="section">
                 <div class="section-title">Camera & Video</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Capture photos and videos for your trip. They automatically save to your shared album.</p>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Capture photos and videos. They save locally to your device.</p>
                 
                 <div class="card">
                     <div class="card-title">📷 Take Photos</div>
@@ -611,12 +619,24 @@
                         🎥 Record Video
                     </button>
                 </div>
+
+                <div class="card">
+                    <div class="card-title">💾 Export to iCloud</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Save your photos/videos for uploading to iCloud</p>
+                    <button class="btn btn-secondary" style="width: 100%; padding: 12px; margin-bottom: 8px;" onclick="checkStorageStatus()">
+                        📊 Check Storage Status
+                    </button>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="downloadAllPhotosAsZip()">
+                        ⬇️ Download All Photos & Videos
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">📱 <strong>iOS Instructions:</strong> Download the ZIP, then upload the files to iCloud Drive or share with your wife</p>
+                </div>
                 
                 <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleCameraCapture(event)" style="display: none;">
                 <input type="file" id="videoInput" accept="video/*" capture="environment" onchange="handleVideoCapture(event)" style="display: none;">
                 
-                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📸 Shared Album</div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 12px;">Your photos and videos appear here as you capture them</p>
+                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📸 Album (<span id="photoCount">0</span>)</div>
+                <p style="font-size: 12px; color: #666; margin-bottom: 12px;">Your photos and videos appear here. Tap any photo to delete.</p>
                 <div id="photoGrid" class="photo-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; min-height: 200px;">
                     <div style="grid-column: 1 / -1; text-align: center; color: #999; padding: 40px 20px;">No photos or videos yet. Start capturing!</div>
                 </div>
@@ -625,29 +645,140 @@
             <!-- Dining Section (Tab 3) -->
             <section id="dining" class="section">
                 <div class="section-title">🍽️ Sicilian Dining Guide</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Top dishes to try during your Sicily adventure</p>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Explore Sicilian cuisine and fasting-friendly options</p>
                 
                 <div style="margin-bottom: 12px;">
-                    <select id="mealSelector" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 600;" onchange="displayMealDishes()">
-                        <option value="">-- Select Meal Type --</option>
-                        <option value="breakfast">🌅 Breakfast</option>
-                        <option value="lunch">☀️ Lunch</option>
-                        <option value="dinner">🌙 Dinner</option>
-                    </select>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn btn-primary" style="padding: 10px;" onclick="showDiningTab('regular')">🍝 Regular Dishes</button>
+                        <button class="btn btn-secondary" style="padding: 10px;" onclick="showDiningTab('fasting')">✝️ Fasting Guide</button>
+                    </div>
                 </div>
                 
-                <div id="diningContainer"></div>
+                <div id="regularDiningSection">
+                    <div style="margin-bottom: 12px;">
+                        <select id="mealSelector" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 600;" onchange="displayMealDishes()">
+                            <option value="">-- Select Meal Type --</option>
+                            <option value="breakfast">🌅 Breakfast</option>
+                            <option value="lunch">☀️ Lunch</option>
+                            <option value="dinner">🌙 Dinner</option>
+                        </select>
+                    </div>
+                    
+                    <div id="diningContainer"></div>
+                </div>
+                
+                <div id="fastingDiningSection" style="display: none;">
+                    <div class="card">
+                        <div class="card-title">✝️ Eastern Orthodox Fasting Schedule</div>
+                        <p style="font-size: 11px; color: #666; margin-bottom: 10px;">Traditional fasting periods in the Orthodox Church</p>
+                        
+                        <div style="background: #f9f9f9; padding: 10px; border-radius: 6px; font-size: 11px; margin-bottom: 12px; line-height: 1.6;">
+                            <div style="margin-bottom: 8px;"><strong>Great Lent:</strong> 40 days before Easter (no meat, fish, dairy, eggs, oil)</div>
+                            <div style="margin-bottom: 8px;"><strong>Holy Week:</strong> Strict fasting, no food Mon-Wed</div>
+                            <div style="margin-bottom: 8px;"><strong>Christmas Fast:</strong> 40 days before Christmas (no meat, fish, dairy, eggs)</div>
+                            <div style="margin-bottom: 8px;"><strong>Apostles' Fast:</strong> Variable duration after Pentecost (no meat, fish, dairy, eggs)</div>
+                            <div><strong>Dormition Fast:</strong> Aug 1-15 (no meat, fish, dairy, eggs)</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <select id="fastingMealSelector" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 600;" onchange="displayFastingMealDishes()">
+                            <option value="">-- Select Meal Type --</option>
+                            <option value="breakfast">🌅 Breakfast</option>
+                            <option value="lunch">☀️ Lunch</option>
+                            <option value="dinner">🌙 Dinner</option>
+                        </select>
+                    </div>
+                    
+                    <div id="fastingDiningContainer"></div>
+                </div>
             </section>
 
-            <!-- WhatsApp Section (Tab 4) -->
-            <section id="whatsapp" class="section">
-                <div class="section-title">WhatsApp</div>
-                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Stay connected with your wife while traveling</p>
+            <!-- Journal Section (Tab 5) -->
+            <section id="journal" class="section">
+                <div class="section-title">📔 Trip Journal</div>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Write about your experiences and memories from Sicily</p>
                 
                 <div class="card">
-                    <div class="card-title">💬 Send Message</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Quick message to your wife on WhatsApp</p>
-                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="openWhatsApp()">
+                    <div class="card-title">✍️ New Entry</div>
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" id="journalTitle" placeholder="Entry title (e.g., Day 1 in Palermo)" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-bottom: 8px;">
+                        <textarea id="journalContent" placeholder="Write your thoughts, experiences, and memories..." style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; min-height: 150px; resize: vertical; font-family: inherit;"></textarea>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="saveJournalEntry()">💾 Save Entry</button>
+                </div>
+                
+                <div class="section-title" style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">📚 Your Entries</div>
+                <div id="journalEntries"></div>
+            </section>
+
+            <!-- News Section (Tab 6) -->
+            <section id="news" class="section">
+                <div class="section-title">📰 Sicily News</div>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Latest news and updates from Sicily</p>
+                
+                <iframe src="https://news.google.com/news?q=Sicily&hl=en-US&gl=US&ceid=US:en" 
+                        style="width: 100%; height: 600px; border: none; border-radius: 8px; background: white;"
+                        title="Sicily News Feed">
+                </iframe>
+                
+                <div style="margin-top: 12px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; color: #666;">
+                    <strong>💡 Tip:</strong> Tap any article to read the full story on the news site.
+                </div>
+            </section>
+
+            <!-- WhatsApp Section (Tab 6) -->
+            <section id="whatsapp" class="section">
+                <div class="section-title">💬 WhatsApp</div>
+                <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Share updates with the family in your Sicily group</p>
+                
+                <div class="card">
+                    <div class="card-title">⚡ Quick Message Templates</div>
+                    <p style="font-size: 11px; color: #999; margin-bottom: 12px;">One-tap copy to Sicily group</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('We found an amazing place! 🇮🇹')">🎉 Found Great Spot</button>
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('The food here is incredible! 🍝')">🍽️ Great Food</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('Check out this view! 😍')">🏞️ Amazing View</button>
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('On our way! See you soon 👋')">⏰ On the Way</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('Photos coming soon! 📸')">📸 Photos Coming</button>
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('Having an amazing time! ❤️')">💕 Loving It Here</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('Day complete! Tired but happy 😴')">😴 Day Over</button>
+                        <button class="btn btn-primary" style="font-size: 12px; padding: 12px;" onclick="copyToGroup('Thinking of you all! ❤️')">❤️ Missing You</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📸 Share Recent Photos</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Quickly share your trip memories with the group</p>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="preparePhotosForSharing()">
+                        📸 Copy Photo Update for Group
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 8px;">Shows how many photos you have to share</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">✍️ Custom Message</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Type your own message for the group</p>
+                    <textarea id="customWhatsAppMessage" placeholder="Type your message here..." style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; min-height: 80px; resize: vertical; font-family: inherit; margin-bottom: 8px;"></textarea>
+                    <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="sendCustomMessage()">
+                        ↔️ Copy for Sicily Group
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📞 Open WhatsApp Directly</div>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">For longer conversations</p>
+                    <button class="btn btn-secondary" style="width: 100%; padding: 12px;" onclick="openWhatsApp()">
                         💬 Open WhatsApp
                     </button>
                 </div>
@@ -722,7 +853,44 @@
             ]
         };
 
-        const phrases = {
+        const fastingDiningGuide = {
+            breakfast: [
+                { name: 'Panelle', category: 'Vegan', description: 'Fried chickpea flour fritters - traditional & fasting-approved', dietary: 'Vegan, often gluten-free' },
+                { name: 'Caponata', category: 'Vegan', description: 'Sweet and sour eggplant relish - perfect for fasting days', dietary: 'Vegan, Gluten-free' },
+                { name: 'Arancini di Verdure', category: 'Vegan', description: 'Rice balls with vegetables (oil-based, no dairy)', dietary: 'Vegan, GF available' },
+                { name: 'Pasta e Fagioli', category: 'Vegan', description: 'Pasta and beans in tomato broth', dietary: 'Vegan, contains gluten' },
+                { name: 'Orange Juice Fresh Squeezed', category: 'Breakfast', description: 'Fresh Sicilian orange juice', dietary: 'Vegan, Gluten-free' },
+                { name: 'Sicilian Bread with Olives', category: 'Vegan', description: 'Fresh bread with olives (no oil added)', dietary: 'Vegan, contains gluten' },
+                { name: 'Minestrone Vegetale', category: 'Vegan', description: 'Vegetable soup with pasta', dietary: 'Vegan, contains gluten' },
+                { name: 'Fave e Cicoria', category: 'Vegan', description: 'Fava bean puree with wild chicory', dietary: 'Vegan, Gluten-free' },
+                { name: 'Pasta al Pomodoro', category: 'Vegan', description: 'Pasta with simple tomato sauce', dietary: 'Vegan, contains gluten' },
+                { name: 'Grilled Vegetables', category: 'Vegan', description: 'Seasonal grilled vegetables with herbs', dietary: 'Vegan, Gluten-free' }
+            ],
+            lunch: [
+                { name: 'Pasta con le Verdure', category: 'Vegan', description: 'Pasta with seasonal vegetables', dietary: 'Vegan, contains gluten' },
+                { name: 'Cavolfiore Fritto', category: 'Vegan', description: 'Fried cauliflower (prepared with oil, no dairy)', dietary: 'Vegan, may contain gluten in batter' },
+                { name: 'Insalata Siciliana', category: 'Vegan', description: 'Sicilian salad with tomatoes, olives, onions', dietary: 'Vegan, Gluten-free' },
+                { name: 'Pasta e Ceci', category: 'Vegan', description: 'Pasta with chickpeas - hearty fasting meal', dietary: 'Vegan, contains gluten' },
+                { name: 'Arista di Verdure', category: 'Vegan', description: 'Roasted vegetables with herbs', dietary: 'Vegan, Gluten-free' },
+                { name: 'Zuppa di Verdure', category: 'Vegan', description: 'Vegetable soup with bread', dietary: 'Vegan, contains gluten in bread' },
+                { name: 'Pasta al Nero di Seppia (Oil-based)', category: 'Vegan', description: 'Black squid ink pasta prepared with olive oil only', dietary: 'May contain seafood, contains gluten' },
+                { name: 'Carciofi Trifolati', category: 'Vegan', description: 'Artichokes sautéed with garlic and olive oil', dietary: 'Vegan, Gluten-free' },
+                { name: 'Pasta Fredda con Verdure', category: 'Vegan', description: 'Cold pasta salad with vegetables', dietary: 'Vegan, contains gluten' },
+                { name: 'Melanzane Grigliate', category: 'Vegan', description: 'Grilled eggplant with olive oil and herbs', dietary: 'Vegan, Gluten-free' }
+            ],
+            dinner: [
+                { name: 'Pasta alla Siciliana (Vegan)', category: 'Vegan', description: 'Pasta with eggplant, tomato, basil - oil-based', dietary: 'Vegan, contains gluten' },
+                { name: 'Cavolfiore alla Pignata', category: 'Vegan', description: 'Cauliflower with tomatoes and olives', dietary: 'Vegan, Gluten-free' },
+                { name: 'Pasta e Lenticchie', category: 'Vegan', description: 'Pasta with lentil soup', dietary: 'Vegan, contains gluten' },
+                { name: 'Arancia Ripiena di Verdure', category: 'Vegan', description: 'Sicilian orange-braised vegetables', dietary: 'Vegan, Gluten-free' },
+                { name: 'Pane Carasau con Pomodoro', category: 'Vegan', description: 'Thin crispy bread with tomato spread', dietary: 'Vegan, contains gluten' },
+                { name: 'Minestra di Fave', category: 'Vegan', description: 'Fava bean soup - traditional fasting dish', dietary: 'Vegan, Gluten-free' },
+                { name: 'Pasta con Salsa di Noce', category: 'Vegan', description: 'Pasta with walnut sauce (oil-based)', dietary: 'Vegan, contains gluten' },
+                { name: 'Peperoni Arrostiti', category: 'Vegan', description: 'Roasted bell peppers with garlic and oil', dietary: 'Vegan, Gluten-free' },
+                { name: 'Riso e Bisi (Oil-based)', category: 'Vegan', description: 'Rice and peas without butter or cheese', dietary: 'Vegan, Gluten-free' },
+                { name: 'Granita Siciliana', category: 'Vegan', description: 'Sicilian ice with fresh fruit (vegan version)', dietary: 'Vegan, Gluten-free' }
+            ]
+        };
             italian: {
                 transportation: [
                     { english: 'Bicycle rental', italian: 'Noleggio biciclette', response: 'Certo, quanto tempo vuoi?' },
@@ -1303,6 +1471,93 @@
             }
         }
 
+        // Journal functions
+        let journalEntries = [];
+
+        function loadJournalFromStorage() {
+            try {
+                const stored = localStorage.getItem('sicily-trip-journal');
+                if (stored) {
+                    journalEntries = JSON.parse(stored);
+                    displayJournalEntries();
+                }
+            } catch (e) {
+                console.log('Could not load journal from storage');
+            }
+        }
+
+        function saveJournalToStorage() {
+            try {
+                localStorage.setItem('sicily-trip-journal', JSON.stringify(journalEntries));
+            } catch (e) {
+                console.log('Could not save journal to storage');
+            }
+        }
+
+        function saveJournalEntry() {
+            const title = document.getElementById('journalTitle').value.trim();
+            const content = document.getElementById('journalContent').value.trim();
+
+            if (!title || !content) {
+                alert('Please enter both a title and some content');
+                return;
+            }
+
+            journalEntries.unshift({
+                id: Date.now(),
+                title: title,
+                content: content,
+                date: new Date().toLocaleString()
+            });
+
+            saveJournalToStorage();
+            displayJournalEntries();
+
+            // Clear form and show success
+            document.getElementById('journalTitle').value = '';
+            document.getElementById('journalContent').value = '';
+
+            const feedback = document.createElement('div');
+            feedback.style.cssText = 'position: fixed; top: 20px; left: 20px; right: 20px; background: #4CAF50; color: white; padding: 12px 16px; border-radius: 6px; z-index: 1000; text-align: center; font-weight: 500;';
+            feedback.textContent = 'Journal entry saved ✓';
+            document.body.appendChild(feedback);
+
+            setTimeout(() => {
+                feedback.remove();
+            }, 2000);
+        }
+
+        function deleteJournalEntry(id) {
+            if (confirm('Delete this entry?')) {
+                journalEntries = journalEntries.filter(entry => entry.id !== id);
+                saveJournalToStorage();
+                displayJournalEntries();
+            }
+        }
+
+        function displayJournalEntries() {
+            const container = document.getElementById('journalEntries');
+            
+            if (journalEntries.length === 0) {
+                container.innerHTML = '<div class="card" style="text-align: center; color: #999; padding: 30px;">No entries yet. Start writing to remember your journey!</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            journalEntries.forEach(entry => {
+                const entryCard = document.createElement('div');
+                entryCard.className = 'card';
+                entryCard.style.marginBottom = '12px';
+                entryCard.innerHTML = `
+                    <div class="card-title" style="margin-bottom: 4px;">${entry.title}</div>
+                    <div style="font-size: 10px; color: #999; margin-bottom: 8px;">📅 ${entry.date}</div>
+                    <div style="font-size: 13px; color: #333; line-height: 1.6; margin-bottom: 10px; white-space: pre-wrap; word-wrap: break-word;">${entry.content}</div>
+                    <button class="btn btn-secondary" style="width: 100%; font-size: 11px;" onclick="deleteJournalEntry(${entry.id})">🗑️ Delete</button>
+                `;
+                container.appendChild(entryCard);
+            });
+        }
+
         function switchTab(tabName) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-rail-item').forEach(t => t.classList.remove('active'));
@@ -1554,6 +1809,17 @@
             const grid = document.getElementById('photoGrid');
             grid.innerHTML = '';
             
+            // Update photo count
+            const countElement = document.getElementById('photoCount');
+            if (countElement) {
+                countElement.textContent = uploadedPhotos.length;
+            }
+            
+            if (uploadedPhotos.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #999; padding: 40px 20px;">No photos or videos yet. Start capturing!</div>';
+                return;
+            }
+            
             uploadedPhotos.forEach((photo, index) => {
                 const photoContainer = document.createElement('div');
                 photoContainer.style.position = 'relative';
@@ -1591,21 +1857,60 @@
                 
                 photoContainer.appendChild(timestamp);
                 
+                photoContainer.style.cursor = 'pointer';
                 photoContainer.onclick = () => {
-                    uploadedPhotos.splice(index, 1);
-                    savePhotosToStorage();
-                    updatePhotoGrid();
+                    if (confirm('Delete this photo/video?')) {
+                        uploadedPhotos.splice(index, 1);
+                        savePhotosToStorage();
+                        updatePhotoGrid();
+                    }
                 };
                 
                 grid.appendChild(photoContainer);
             });
+        }
+
+        function checkStorageStatus() {
+            const totalSize = uploadedPhotos.reduce((sum, photo) => {
+                return sum + (photo.data ? photo.data.length : 0);
+            }, 0);
             
-            // Add camera button
-            const cameraBtn = document.createElement('div');
-            cameraBtn.className = 'photo-placeholder';
-            cameraBtn.innerHTML = '📷<br><span style="font-size: 11px;">Tap to<br>take photo</span>';
-            cameraBtn.onclick = () => openCamera();
-            grid.appendChild(cameraBtn);
+            const sizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+            const photoCount = uploadedPhotos.length;
+            
+            alert(`📊 Storage Status:\n\n📸 Photos & Videos: ${photoCount}\n💾 Total Size: ${sizeMB} MB\n\n✅ Your photos are safely stored locally and persist across sessions!\n\n💡 Tip: Download and upload to iCloud when you have WiFi.`);
+        }
+
+        function downloadAllPhotosAsZip() {
+            if (uploadedPhotos.length === 0) {
+                alert('No photos or videos to download yet.');
+                return;
+            }
+            
+            // Create a simple HTML page that allows downloading individual photos
+            alert(`You have ${uploadedPhotos.length} photo(s)/video(s)! 📸\n\nOn your iPhone:\n1. Tap "Share" button below\n2. Choose "Save to Files"\n3. Select iCloud Drive folder\n4. Photos will be saved for syncing\n\nAlternatively, use the browser's download option.`);
+            
+            // Download individual photos
+            let downloadCount = 0;
+            uploadedPhotos.forEach((photo, index) => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    const filename = photo.isVideo ? 
+                        `sicily-video-${index + 1}.mp4` : 
+                        `sicily-photo-${index + 1}.jpg`;
+                    
+                    link.href = photo.data;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    downloadCount++;
+                    
+                    if (downloadCount === uploadedPhotos.length) {
+                        alert(`✅ Downloaded ${uploadedPhotos.length} file(s)!\n\nNow drag them to your iCloud Drive or share with your wife.`);
+                    }
+                }, index * 500); // Stagger downloads
+            });
         }
 
         function speakText(text) {
@@ -1669,9 +1974,18 @@
             }
         }
 
-        function startCameraTranslation() {
-            // Trigger the camera input (same as Camera tab)
-            document.getElementById('cameraInput').click();
+        function openGoogleLens() {
+            // Google Lens URL scheme for iOS
+            // This opens Google Lens camera directly on iPhone
+            const googleLensURL = 'https://lens.google.com/';
+            
+            // Try opening in app if available
+            window.location.href = googleLensURL;
+            
+            // Fallback message if it doesn't open
+            setTimeout(() => {
+                alert('Opening Google Lens...\n\nIf Google Lens didn\'t open, make sure you have the Google app installed, then tap the Lens icon (camera icon) at the bottom of the search bar.');
+            }, 1500);
         }
 
         function translateText() {
@@ -1739,6 +2053,59 @@
             setTimeout(() => {
                 alert('If WhatsApp didn\'t open, please install it or use the web version at web.whatsapp.com');
             }, 1500);
+        }
+
+        function sendQuickMessage(message) {
+            const encodedMessage = encodeURIComponent(message);
+            window.location.href = `https://wa.me/?text=${encodedMessage}`;
+            
+            setTimeout(() => {
+                alert('If WhatsApp didn\'t open, please install it or use the web version at web.whatsapp.com');
+            }, 1500);
+        }
+
+        function sendCustomMessage() {
+            const customMessage = document.getElementById('customWhatsAppMessage').value.trim();
+            
+            if (!customMessage) {
+                alert('Please type a message first');
+                return;
+            }
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(customMessage).then(() => {
+                alert('Message copied! 📋\n\nNow:\n1. Open WhatsApp\n2. Go to Sicily group\n3. Paste the message');
+                document.getElementById('customWhatsAppMessage').value = '';
+            }).catch(() => {
+                // Fallback for browsers that don't support clipboard
+                alert('Message:\n\n' + customMessage + '\n\nCopy this and paste in Sicily group');
+            });
+        }
+
+        function copyToGroup(message) {
+            navigator.clipboard.writeText(message).then(() => {
+                alert('Message copied! 📋\n\nNow:\n1. Open WhatsApp\n2. Go to Sicily group\n3. Paste the message');
+            }).catch(() => {
+                // Fallback for browsers that don't support clipboard
+                alert('Message:\n\n' + message + '\n\nCopy this and paste in Sicily group');
+            });
+        }
+
+        function preparePhotosForSharing() {
+            const photoCount = uploadedPhotos.length;
+            
+            if (photoCount === 0) {
+                alert('No photos yet! Take some photos first in the Camera tab.');
+                return;
+            }
+            
+            const message = `I have ${photoCount} photo${photoCount !== 1 ? 's' : ''} from our trip to share! 📸`;
+            
+            navigator.clipboard.writeText(message).then(() => {
+                alert(`You have ${photoCount} photo${photoCount !== 1 ? 's' : ''}! 📸\n\nMessage copied! Now:\n1. Open WhatsApp\n2. Go to Sicily group\n3. Paste the message`);
+            }).catch(() => {
+                alert(`You have ${photoCount} photo${photoCount !== 1 ? 's' : ''}!\n\n${message}\n\nCopy this and paste in Sicily group`);
+            });
         }
 
         function openMapsApp(service) {
@@ -1902,6 +2269,67 @@
             });
         }
 
+        function showDiningTab(tab) {
+            const regularSection = document.getElementById('regularDiningSection');
+            const fastingSection = document.getElementById('fastingDiningSection');
+            const regularBtn = document.querySelector('[onclick="showDiningTab(\'regular\')"]');
+            const fastingBtn = document.querySelector('[onclick="showDiningTab(\'fasting\')"]');
+            
+            if (tab === 'regular') {
+                regularSection.style.display = 'block';
+                fastingSection.style.display = 'none';
+                regularBtn.className = 'btn btn-primary';
+                regularBtn.style.padding = '10px';
+                fastingBtn.className = 'btn btn-secondary';
+                fastingBtn.style.padding = '10px';
+            } else {
+                regularSection.style.display = 'none';
+                fastingSection.style.display = 'block';
+                regularBtn.className = 'btn btn-secondary';
+                regularBtn.style.padding = '10px';
+                fastingBtn.className = 'btn btn-primary';
+                fastingBtn.style.padding = '10px';
+            }
+        }
+
+        function displayFastingMealDishes() {
+            const selector = document.getElementById('fastingMealSelector');
+            const selectedMeal = selector.value;
+            const container = document.getElementById('fastingDiningContainer');
+            
+            if (!selectedMeal) {
+                container.innerHTML = '<div class="card" style="text-align: center; color: #999; padding: 20px;">Select a meal type to see fasting-friendly options</div>';
+                return;
+            }
+            
+            const dishes = fastingDiningGuide[selectedMeal];
+            container.innerHTML = '';
+            
+            const mealLabels = {
+                breakfast: '🌅 Fasting-Friendly Breakfast',
+                lunch: '☀️ Fasting-Friendly Lunch',
+                dinner: '🌙 Fasting-Friendly Dinner'
+            };
+            
+            const mealTitle = document.createElement('div');
+            mealTitle.style.cssText = 'font-size: 18px; font-weight: 600; color: #8b4513; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #ddd;';
+            mealTitle.textContent = mealLabels[selectedMeal];
+            container.appendChild(mealTitle);
+            
+            dishes.forEach((dish, index) => {
+                const dishCard = document.createElement('div');
+                dishCard.className = 'card';
+                dishCard.style.marginBottom = '12px';
+                dishCard.innerHTML = `
+                    <div class="card-title" style="margin-bottom: 4px;">${dish.name}</div>
+                    <div style="font-size: 11px; color: #666; margin-bottom: 4px;"><strong>Category:</strong> ${dish.category}</div>
+                    <div style="font-size: 12px; color: #333; margin-bottom: 6px; line-height: 1.4;">${dish.description}</div>
+                    <div style="font-size: 10px; background: #fff3e0; padding: 4px 6px; border-radius: 4px; color: #666;">📋 ${dish.dietary}</div>
+                `;
+                container.appendChild(dishCard);
+            });
+        }
+
         function displayCityAttractions() {
             const selector = document.getElementById('citySelector');
             const selectedCity = selector.value;
@@ -1977,6 +2405,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadPhotosFromStorage();
+            loadJournalFromStorage();
             renderAlphabet();
             renderChurches();
             fetchExchangeRate();
