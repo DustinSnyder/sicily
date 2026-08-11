@@ -70,7 +70,7 @@
             -webkit-overflow-scrolling: auto;
             z-index: 200;
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 6px;
             align-items: center;
             box-shadow: none;
@@ -965,6 +965,7 @@
                 <div style="display: flex; gap: 8px; margin-bottom: 1rem;">
                     <button class="btn btn-primary" onclick="showBudgetTab('dashboard')" id="dashboardBtn" style="flex: 1; padding: 10px;">📊 Dashboard</button>
                     <button class="btn btn-secondary" onclick="showBudgetTab('addexpense')" id="addExpenseBtn" style="flex: 1; padding: 10px;">➕ Add Expense</button>
+                    <button class="btn btn-secondary" onclick="showBudgetTab('settings')" id="settingsBtn" style="flex: 1; padding: 10px;">⚙️ Settings</button>
                 </div>
 
                 <!-- Dashboard Tab -->
@@ -1133,6 +1134,74 @@
                     <div class="card" style="background: #e8f5e9; border: 0.5px solid #81c784;">
                         <p style="margin: 0; font-size: 12px; color: #2e7d32;">
                             <strong>💡 Tip:</strong> Expenses are saved locally. Share the link below with your wife to sync budgets manually, or integrate with Google Sheets for real-time updates.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Budget Settings Tab -->
+                <div id="budgetSettings" style="display: none;">
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 12px;">Edit Budget Settings</div>
+                        
+                        <div style="margin-bottom: 16px; padding: 12px; background: #f5f5f5; border-radius: 6px;">
+                            <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">Total Trip Budget</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="number" id="totalBudgetInput" placeholder="0.00" step="0.01" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                                <span style="padding: 8px; font-weight: 500; color: #333;">€</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 12px;">
+                            <div class="card-title" style="font-size: 12px; margin-bottom: 12px;">Category Budgets</div>
+                            
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">✈️ Flights Budget</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="number" id="flightBudgetInput" placeholder="0.00" step="0.01" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                                    <span style="padding: 8px; font-weight: 500; color: #333;">€</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">🏨 Hotels Budget</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="number" id="hotelBudgetInput" placeholder="0.00" step="0.01" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                                    <span style="padding: 8px; font-weight: 500; color: #333;">€</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">🍽️ Dining Budget</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="number" id="diningBudgetInput" placeholder="0.00" step="0.01" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                                    <span style="padding: 8px; font-weight: 500; color: #333;">€</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">🛍️ Shopping Budget</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="number" id="shoppingBudgetInput" placeholder="0.00" step="0.01" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                                    <span style="padding: 8px; font-weight: 500; color: #333;">€</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">🚗 Transport Budget</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="number" id="transportBudgetInput" placeholder="0.00" step="0.01" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                                    <span style="padding: 8px; font-weight: 500; color: #333;">€</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="saveBudgetSettings()" style="width: 100%; padding: 12px; margin-bottom: 12px;">💾 Save Budget Settings</button>
+                        <button class="btn btn-secondary" onclick="loadBudgetSettingsForm()" style="width: 100%; padding: 10px;">🔄 Reset to Current</button>
+                    </div>
+
+                    <div class="card" style="background: #e3f2fd; border: 0.5px solid #90caf9;">
+                        <p style="margin: 0; font-size: 12px; color: #1565c0;">
+                            <strong>ℹ️ Info:</strong> Your budget settings are saved locally on this device. Any changes will apply to all future expense tracking.
                         </p>
                     </div>
                 </div>
@@ -2362,13 +2431,15 @@
             }, 500);
         }
 
-        const budgetLimits = {
+        let budgetLimits = {
             'Flights': 1200,
             'Hotels': 1850,
             'Dining': 800,
             'Shopping': 300,
             'Transport': 100
         };
+
+        let totalBudget = 4250;
 
         let expenses = [];
 
@@ -2377,6 +2448,15 @@
             if (saved) {
                 expenses = JSON.parse(saved);
             }
+            
+            // Load budget settings if they exist
+            const savedBudget = localStorage.getItem('sicily-budget-settings');
+            if (savedBudget) {
+                const settings = JSON.parse(savedBudget);
+                totalBudget = settings.total;
+                budgetLimits = settings.limits;
+            }
+            
             updateBudgetDisplay();
         }
 
@@ -2387,16 +2467,18 @@
         function showBudgetTab(tab) {
             document.getElementById('budgetDashboard').style.display = tab === 'dashboard' ? 'block' : 'none';
             document.getElementById('budgetAddExpense').style.display = tab === 'addexpense' ? 'block' : 'none';
+            document.getElementById('budgetSettings').style.display = tab === 'settings' ? 'block' : 'none';
             
             const dashBtn = document.getElementById('dashboardBtn');
             const addBtn = document.getElementById('addExpenseBtn');
+            const setBtn = document.getElementById('settingsBtn');
             
-            if (tab === 'dashboard') {
-                dashBtn.className = 'btn btn-primary';
-                addBtn.className = 'btn btn-secondary';
-            } else {
-                dashBtn.className = 'btn btn-secondary';
-                addBtn.className = 'btn btn-primary';
+            dashBtn.className = tab === 'dashboard' ? 'btn btn-primary' : 'btn btn-secondary';
+            addBtn.className = tab === 'addexpense' ? 'btn btn-primary' : 'btn btn-secondary';
+            setBtn.className = tab === 'settings' ? 'btn btn-primary' : 'btn btn-secondary';
+            
+            if (tab === 'settings') {
+                loadBudgetSettingsForm();
             }
         }
 
@@ -2487,7 +2569,6 @@
             });
 
             const totalSpent = Object.values(categoryTotals).reduce((a, b) => a + b, 0);
-            const totalBudget = 4250;
             const remaining = Math.max(0, totalBudget - totalSpent);
             const percentUsed = Math.min(100, (totalSpent / totalBudget) * 100);
 
@@ -2503,11 +2584,11 @@
             document.getElementById('budgetBar').style.width = percentUsed + '%';
             document.getElementById('budgetBar').style.background = percentUsed > 90 ? '#d32f2f' : percentUsed > 75 ? '#f57c00' : '#2e7d32';
 
-            updateCategoryBar('Flights', categoryTotals['Flights'], 1200);
-            updateCategoryBar('Hotels', categoryTotals['Hotels'], 1850);
-            updateCategoryBar('Dining', categoryTotals['Dining'], 800);
-            updateCategoryBar('Shopping', categoryTotals['Shopping'], 300);
-            updateCategoryBar('Transport', categoryTotals['Transport'], 100);
+            updateCategoryBar('Flights', categoryTotals['Flights'], budgetLimits['Flights']);
+            updateCategoryBar('Hotels', categoryTotals['Hotels'], budgetLimits['Hotels']);
+            updateCategoryBar('Dining', categoryTotals['Dining'], budgetLimits['Dining']);
+            updateCategoryBar('Shopping', categoryTotals['Shopping'], budgetLimits['Shopping']);
+            updateCategoryBar('Transport', categoryTotals['Transport'], budgetLimits['Transport']);
 
             displayRecentExpenses();
         }
@@ -2531,6 +2612,48 @@
                 barElement.style.width = percent + '%';
                 barElement.style.background = percent > 100 ? '#d32f2f' : percent > 80 ? '#f57c00' : '#1e5a96';
             }
+        }
+
+        function loadBudgetSettingsForm() {
+            document.getElementById('totalBudgetInput').value = totalBudget;
+            document.getElementById('flightBudgetInput').value = budgetLimits['Flights'];
+            document.getElementById('hotelBudgetInput').value = budgetLimits['Hotels'];
+            document.getElementById('diningBudgetInput').value = budgetLimits['Dining'];
+            document.getElementById('shoppingBudgetInput').value = budgetLimits['Shopping'];
+            document.getElementById('transportBudgetInput').value = budgetLimits['Transport'];
+        }
+
+        function saveBudgetSettings() {
+            const newTotal = parseFloat(document.getElementById('totalBudgetInput').value);
+            const newFlights = parseFloat(document.getElementById('flightBudgetInput').value);
+            const newHotels = parseFloat(document.getElementById('hotelBudgetInput').value);
+            const newDining = parseFloat(document.getElementById('diningBudgetInput').value);
+            const newShopping = parseFloat(document.getElementById('shoppingBudgetInput').value);
+            const newTransport = parseFloat(document.getElementById('transportBudgetInput').value);
+
+            if (!newTotal || newTotal <= 0 || !newFlights || !newHotels || !newDining || !newShopping || !newTransport) {
+                alert('Please enter valid amounts for all budgets');
+                return;
+            }
+
+            totalBudget = newTotal;
+            budgetLimits = {
+                'Flights': newFlights,
+                'Hotels': newHotels,
+                'Dining': newDining,
+                'Shopping': newShopping,
+                'Transport': newTransport
+            };
+
+            const settings = {
+                total: totalBudget,
+                limits: budgetLimits
+            };
+
+            localStorage.setItem('sicily-budget-settings', JSON.stringify(settings));
+            alert('✅ Budget settings saved!');
+            updateBudgetDisplay();
+            showBudgetTab('dashboard');
         }
 
         function displayRecentExpenses() {
