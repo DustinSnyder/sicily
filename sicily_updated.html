@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sicily Travel App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #161826;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #2a2a3e;
+            background: #1a1a2e;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            padding: 12px;
+            overflow-y: auto;
+            background: #1a1a2e;
+            border-bottom: 1px solid #2a2a3e;
+            max-height: 120px;
+        }
+
+        .tab-button {
+            padding: 8px 12px;
+            background: #2a2a3e;
+            border: 1px solid #3a3a4e;
+            color: #b0b0c0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .tab-button:hover {
+            background: #3a3a4e;
+        }
+
+        .tab-button.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .budget-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .budget-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2a2a3e;
+        }
+
+        .budget-tab {
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            color: #b0b0c0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .budget-tab:hover {
+            color: #ffffff;
+        }
+
+        .budget-tab.active {
+            color: #6366f1;
+            border-bottom-color: #6366f1;
+        }
+
+        .budget-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #2a2a3e;
+            border: 1px solid #3a3a4e;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #9090a0;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #3a3a4e;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            transition: width 0.3s ease;
+        }
+
+        .category-section {
+            margin-top: 24px;
+        }
+
+        .category-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .category-item {
+            background: #2a2a3e;
+            border: 1px solid #3a3a4e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        .category-spent {
+            font-size: 12px;
+            color: #9090a0;
+        }
+
+        .category-progress {
+            flex: 0 0 150px;
+        }
+
+        .category-amount {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6366f1;
+            text-align: right;
+            flex: 0 0 auto;
+        }
+
+        .expense-item {
+            background: #2a2a3e;
+            border: 1px solid #3a3a4e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .expense-info {
+            flex: 1;
+        }
+
+        .expense-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        .expense-meta {
+            font-size: 12px;
+            color: #9090a0;
+        }
+
+        .expense-actions {
+            display: flex;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            color: #7070a0;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px 8px;
+            transition: color 0.3s ease;
+        }
+
+        .icon-button:hover {
+            color: #b0b0c0;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: #9090a0;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            background: #2a2a3e;
+            border: 1px solid #3a3a4e;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        .button {
+            padding: 10px 16px;
+            background: #6366f1;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: #4f46e5;
+        }
+
+        .button.secondary {
+            background: #3a3a4e;
+            color: #b0b0c0;
+        }
+
+        .button.secondary:hover {
+            background: #4a4a5e;
+        }
+
+        .button.danger {
+            background: #dc2626;
+        }
+
+        .button.danger:hover {
+            background: #b91c1c;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .recent-expenses {
+            margin-top: 24px;
+        }
+
+        .recent-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7070a0;
+        }
+
+        .placeholder-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            }
+
+            .category-item, .expense-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="header-title">
+                <span>🏠</span>
+                <span>🇮🇹 Sicily</span>
+            </div>
+            <div style="font-size: 20px;">👨‍👩‍👧‍👦</div>
+        </div>
+
+        <div class="tabs" id="tabsContainer"></div>
+
+        <div class="content" id="contentContainer"></div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="expenseModal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="expenseModalTitle">Add Expense</h3>
+            <div class="form-group">
+                <label class="form-label">Expense Name</label>
+                <input type="text" class="form-input" id="expenseName" placeholder="e.g., Dinner at restaurant">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="expenseCategory"></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-input" id="expenseAmount" placeholder="0" step="0.01">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select class="form-select" id="expenseCurrency">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="expenseDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Paid By</label>
+                <select class="form-select" id="expensePaidBy">
+                    <option value="You">You</option>
+                    <option value="Wife">Wife</option>
+                    <option value="Shared">Shared</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="button secondary" onclick="closeExpenseModal()">Cancel</button>
+                <button class="button" id="expenseSubmitBtn" onclick="saveExpense()">Add Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Add Category</h3>
+            <div class="form-group">
+                <label class="form-label">Category Name</label>
+                <input type="text" class="form-input" id="categoryName" placeholder="e.g., Wine Tasting">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Budget ($)</label>
+                <input type="number" class="form-input" id="categoryBudget" placeholder="0" step="0.01">
+            </div>
+            <div class="modal-actions">
+                <button class="button secondary" onclick="closeCategoryModal()">Cancel</button>
+                <button class="button" onclick="saveCategory()">Add Category</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let state = {
+            activeTab: 'budget',
+            budgetActiveTab: 'dashboard',
+            editingExpenseId: null,
+            expenses: JSON.parse(localStorage.getItem('sicily_expenses')) || [
+                { id: 1, name: 'Favazza Etna Winery: cooking class', category: 'Dining', amount: 280, currency: 'USD', date: '2026-08-20', paidBy: 'You' },
+                { id: 2, name: 'Casa Amare agnone', category: 'Hotels', amount: 969, currency: 'USD', date: '2026-08-19', paidBy: 'You' },
+                { id: 3, name: 'Airbnb capo d\'orlando', category: 'Hotels', amount: 566, currency: 'USD', date: '2026-08-18', paidBy: 'You' },
+                { id: 4, name: 'Mare airbnb', category: 'Hotels', amount: 631, currency: 'USD', date: '2026-08-17', paidBy: 'You' },
+                { id: 5, name: 'Godfather tour', category: 'Dining', amount: 206, currency: 'USD', date: '2026-08-16', paidBy: 'You' },
+                { id: 6, name: 'Flights', category: 'Flights', amount: 1203, currency: 'USD', date: '2026-08-15', paidBy: 'You' },
+            ],
+            categories: JSON.parse(localStorage.getItem('sicily_categories')) || [
+                { name: 'Flights', budget: 1500 },
+                { name: 'Hotels', budget: 2500 },
+                { name: 'Dining', budget: 2000 },
+                { name: 'Shopping', budget: 1000 },
+                { name: 'Transport', budget: 1500 },
+                { name: 'Experiences', budget: 1500 },
+            ]
+        };
+
+        const tabs = [
+            { id: 'home', label: '🏠 Home' },
+            { id: 'translate', label: '🌐 Translate' },
+            { id: 'dining', label: '🍽️ Dining' },
+            { id: 'documents', label: '📄 Documents' },
+            { id: 'emergency', label: '🆘 Emergency' },
+            { id: 'info', label: 'ℹ️ Info Hub' },
+            { id: 'itinerary', label: '📅 Itinerary' },
+            { id: 'journal', label: '📔 Journal' },
+            { id: 'photos', label: '📸 Photos' },
+            { id: 'reservations', label: '🏨 Reservations' },
+            { id: 'budget', label: '💰 Budget' },
+            { id: 'transport', label: '🚗 Transport' },
+            { id: 'whatsapp', label: '💬 WhatsApp' },
+        ];
+
+        function saveState() {
+            localStorage.setItem('sicily_expenses', JSON.stringify(state.expenses));
+            localStorage.setItem('sicily_categories', JSON.stringify(state.categories));
+        }
+
+        function calculateCategorySpent(categoryName) {
+            return state.expenses
+                .filter(e => e.category === categoryName)
+                .reduce((sum, e) => sum + e.amount, 0);
+        }
+
+        function openExpenseModal(expenseId = null) {
+            state.editingExpenseId = expenseId;
+            const modal = document.getElementById('expenseModal');
+            const titleEl = document.getElementById('expenseModalTitle');
+            const btnEl = document.getElementById('expenseSubmitBtn');
+
+            if (expenseId) {
+                const expense = state.expenses.find(e => e.id === expenseId);
+                document.getElementById('expenseName').value = expense.name;
+                document.getElementById('expenseCategory').value = expense.category;
+                document.getElementById('expenseAmount').value = expense.amount;
+                document.getElementById('expenseCurrency').value = expense.currency;
+                document.getElementById('expenseDate').value = expense.date;
+                document.getElementById('expensePaidBy').value = expense.paidBy;
+                titleEl.textContent = 'Edit Expense';
+                btnEl.textContent = 'Update Expense';
+            } else {
+                document.getElementById('expenseName').value = '';
+                document.getElementById('expenseAmount').value = '';
+                document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('expenseCurrency').value = 'USD';
+                document.getElementById('expensePaidBy').value = 'You';
+                titleEl.textContent = 'Add Expense';
+                btnEl.textContent = 'Add Expense';
+            }
+
+            updateCategoryOptions();
+            modal.classList.add('active');
+        }
+
+        function closeExpenseModal() {
+            document.getElementById('expenseModal').classList.remove('active');
+            state.editingExpenseId = null;
+        }
+
+        function updateCategoryOptions() {
+            const select = document.getElementById('expenseCategory');
+            const currentValue = select.value;
+            select.innerHTML = '';
+            state.categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.name;
+                option.textContent = cat.name;
+                select.appendChild(option);
+            });
+            if (currentValue) select.value = currentValue;
+        }
+
+        function saveExpense() {
+            const name = document.getElementById('expenseName').value;
+            const category = document.getElementById('expenseCategory').value;
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const currency = document.getElementById('expenseCurrency').value;
+            const date = document.getElementById('expenseDate').value;
+            const paidBy = document.getElementById('expensePaidBy').value;
+
+            if (!name || !amount) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (state.editingExpenseId) {
+                const expense = state.expenses.find(e => e.id === state.editingExpenseId);
+                expense.name = name;
+                expense.category = category;
+                expense.amount = amount;
+                expense.currency = currency;
+                expense.date = date;
+                expense.paidBy = paidBy;
+            } else {
+                state.expenses.push({
+                    id: Date.now(),
+                    name, category, amount, currency, date, paidBy
+                });
+            }
+
+            saveState();
+            closeExpenseModal();
+            render();
+        }
+
+        function deleteExpense(id) {
+            state.expenses = state.expenses.filter(e => e.id !== id);
+            saveState();
+            render();
+        }
+
+        function openCategoryModal() {
+            document.getElementById('categoryName').value = '';
+            document.getElementById('categoryBudget').value = '';
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+
+        function saveCategory() {
+            const name = document.getElementById('categoryName').value;
+            const budget = parseFloat(document.getElementById('categoryBudget').value);
+
+            if (!name || !budget) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            state.categories.push({ name, budget });
+            saveState();
+            closeCategoryModal();
+            render();
+        }
+
+        function deleteCategory(name) {
+            if (confirm(`Delete "${name}" category? This will also remove all expenses in this category.`)) {
+                state.categories = state.categories.filter(c => c.name !== name);
+                state.expenses = state.expenses.filter(e => e.category !== name);
+                saveState();
+                render();
+            }
+        }
+
+        function renderBudgetDashboard() {
+            const totalBudget = state.categories.reduce((sum, c) => sum + c.budget, 0);
+            const totalSpent = state.expenses.reduce((sum, e) => sum + e.amount, 0);
+            const remaining = totalBudget - totalSpent;
+            const progressPercent = Math.min((totalSpent / totalBudget) * 100, 100);
+
+            let html = `
+                <h2 class="budget-title">Trip Budget</h2>
+                <div class="budget-tabs">
+                    <button class="budget-tab active" onclick="state.budgetActiveTab = 'dashboard'; render()">Dashboard</button>
+                    <button class="budget-tab" onclick="openExpenseModal(); state.budgetActiveTab = 'add'; render()">Add</button>
+                    <button class="budget-tab" onclick="state.budgetActiveTab = 'settings'; render()">Settings</button>
+                </div>
+
+                <div class="budget-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Budget</div>
+                        <div class="stat-value">$${totalBudget.toLocaleString()} · €${(totalBudget * 0.85).toLocaleString()}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Spent</div>
+                        <div class="stat-value">$${totalSpent.toLocaleString()} · €${(totalSpent * 0.85).toLocaleString()}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Remaining</div>
+                        <div class="stat-value">$${remaining.toLocaleString()} · €${(remaining * 0.85).toLocaleString()}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%; background: ${progressPercent > 90 ? '#dc2626' : progressPercent > 75 ? '#f59e0b' : '#6366f1'}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h3 class="category-title">By Category</h3>
+                    ${state.categories.map(cat => {
+                        const spent = calculateCategorySpent(cat.name);
+                        const percent = Math.min((spent / cat.budget) * 100, 100);
+                        return `
+                            <div class="category-item">
+                                <div class="category-info">
+                                    <div class="category-name">${cat.name}</div>
+                                    <div class="category-spent">$${spent.toFixed(0)} / $${cat.budget}</div>
+                                </div>
+                                <div class="category-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${percent}%; background: ${percent > 90 ? '#dc2626' : percent > 75 ? '#f59e0b' : '#6366f1'}"></div>
+                                    </div>
+                                </div>
+                                <div class="category-amount">$${spent.toFixed(0)}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div class="recent-expenses">
+                    <h3 class="recent-title">Recent Expenses</h3>
+                    ${state.expenses.slice().reverse().slice(0, 5).map(exp => `
+                        <div class="expense-item">
+                            <div class="expense-info">
+                                <div class="expense-name">${exp.name}</div>
+                                <div class="expense-meta">${exp.category} · ${exp.paidBy}</div>
+                            </div>
+                            <div style="margin-right: 12px; font-weight: 600;">$${exp.amount} · €${(exp.amount * 0.85).toFixed(0)}</div>
+                            <div class="expense-actions">
+                                <button class="icon-button" onclick="openExpenseModal(${exp.id})" title="Edit">✏️</button>
+                                <button class="icon-button" onclick="deleteExpense(${exp.id})" title="Delete">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            return html;
+        }
+
+        function renderBudgetSettings() {
+            let html = `
+                <h2 class="budget-title">Trip Budget</h2>
+                <div class="budget-tabs">
+                    <button class="budget-tab" onclick="state.budgetActiveTab = 'dashboard'; render()">Dashboard</button>
+                    <button class="budget-tab" onclick="state.budgetActiveTab = 'add'; render()">Add</button>
+                    <button class="budget-tab active" onclick="state.budgetActiveTab = 'settings'; render()">Settings</button>
+                </div>
+
+                <h3 class="category-title" style="margin-bottom: 20px;">Manage Categories</h3>
+                <button class="button" onclick="openCategoryModal()" style="margin-bottom: 20px;">+ Add Category</button>
+
+                ${state.categories.map(cat => `
+                    <div class="category-item" style="margin-bottom: 12px;">
+                        <div class="category-info">
+                            <div class="category-name">${cat.name}</div>
+                            <div class="category-spent">Budget: $${cat.budget}</div>
+                        </div>
+                        <button class="button danger" onclick="deleteCategory('${cat.name}')">Delete</button>
+                    </div>
+                `).join('')}
+            `;
+            return html;
+        }
+
+        function renderBudget() {
+            if (state.budgetActiveTab === 'settings') {
+                return renderBudgetSettings();
+            }
+            return renderBudgetDashboard();
+        }
+
+        function renderPlaceholder(icon, title) {
+            return `
+                <div class="placeholder-content">
+                    <div class="placeholder-icon">${icon}</div>
+                    <h3 style="margin-bottom: 8px; font-size: 18px;">${title}</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">This feature is available in the full app</p>
+                </div>
+            `;
+        }
+
+        function render() {
+            // Render tabs
+            const tabsHtml = tabs.map(tab => `
+                <button class="tab-button ${state.activeTab === tab.id ? 'active' : ''}" onclick="state.activeTab = '${tab.id}'; state.budgetActiveTab = 'dashboard'; render()">
+                    ${tab.label}
+                </button>
+            `).join('');
+            document.getElementById('tabsContainer').innerHTML = tabsHtml;
+
+            // Render content
+            let contentHtml = '';
+            if (state.activeTab === 'budget') {
+                contentHtml = renderBudget();
+            } else if (state.activeTab === 'home') {
+                contentHtml = renderPlaceholder('🏠', 'Home');
+            } else if (state.activeTab === 'translate') {
+                contentHtml = renderPlaceholder('🌐', 'Translate');
+            } else if (state.activeTab === 'dining') {
+                contentHtml = renderPlaceholder('🍽️', 'Dining Guide');
+            } else if (state.activeTab === 'documents') {
+                contentHtml = renderPlaceholder('📄', 'Documents');
+            } else if (state.activeTab === 'emergency') {
+                contentHtml = renderPlaceholder('🆘', 'Emergency Contacts');
+            } else if (state.activeTab === 'info') {
+                contentHtml = renderPlaceholder('ℹ️', 'Info Hub');
+            } else if (state.activeTab === 'itinerary') {
+                contentHtml = renderPlaceholder('📅', 'Itinerary');
+            } else if (state.activeTab === 'journal') {
+                contentHtml = renderPlaceholder('📔', 'Travel Journal');
+            } else if (state.activeTab === 'photos') {
+                contentHtml = renderPlaceholder('📸', 'Photo Gallery');
+            } else if (state.activeTab === 'reservations') {
+                contentHtml = renderPlaceholder('🏨', 'Reservations');
+            } else if (state.activeTab === 'transport') {
+                contentHtml = renderPlaceholder('🚗', 'Transportation');
+            } else if (state.activeTab === 'whatsapp') {
+                contentHtml = renderPlaceholder('💬', 'WhatsApp Messages');
+            }
+
+            document.getElementById('contentContainer').innerHTML = contentHtml;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', render);
+    </script>
+</body>
+</html>
